@@ -1,30 +1,41 @@
 ## MySQL
 Make sure MySQL server is running: \
-1. Check if the container is running: `docker ps`
-2. If the container isn't running, check if it exists: `docker ps -a`
-3. If the container exists, start it: `docker start container_id`
-4. If the container doesn't exist run:
-   `docker volume create websec_mysql_data`
+1. Check if the container is running:
+```
+docker ps
+```
 
-   `docker run -d \
-     --name websec-mysql56 \
-     -p 3308:3306 \
-     -e MYSQL_ROOT_PASSWORD=rootpassword \
-     -e MYSQL_DATABASE=websec \
-     -v websec_mysql_data:/var/lib/mysql \
-     mysql:5.6`
+2. If the container isn't running, check if it exists:
+```
+docker ps -a
+```
+3. If the container exists, start it:
+```
+docker start container_id
+```
+4. If the container doesn't exist run:
+```
+docker volume create websec_mysql_data
+```
+
+```docker run -d --name websec-mysql56 -p 3308:3306 -e MYSQL_ROOT_PASSWORD=rootpassword -e MYSQL_DATABASE=websec -v websec_mysql_data:/var/lib/mysql mysql:5.6
+```
 
 ## Build websec-api
-`mvn clean package`
+```
+mvn clean package
+```
 
-`java -jar target/web-security.jar`
+```
+java -jar target/web-security.jar
+```
 
 ## Import data
 1. `docker exec -it websec-mysql56 mysql -uroot -prootpassword websec`
 2. `use websec;`
 3. Import data
 
-
+```
     INSERT INTO user ( 
     created, 
     updated, 
@@ -81,19 +92,28 @@ Make sure MySQL server is running: \
     ('2026-03-04 10:10:00', 'Interstellar', 9.5, 'Vizuelno impresivan i emotivan film.', '2026-03-04 10:10:00', 2),
     ('2026-03-04 10:15:00', 'Gladiator', 8.7, 'Sjajna gluma i epska prica.', '2026-03-04 10:15:00', 2),
     ('2026-03-04 10:20:00', 'The Dark Knight', 9.3, 'Jedan od najboljih superhero filmova.', '2026-03-04 10:20:00', 2);
-
+```
 password for maja@maja: password \
 password for pera@pera: password123 \
 
 ## Run
-`java -jar target/web-security.jar`
+```
+java -jar target/web-security.jar
+```
 
 ## Or run websec-api service
-1. Place the websec-api.service in /etc/systemd/system \
-2. Run the service \
-   `systemctl start websec_api.service`
+1. Place the `websec-api.service` in `/etc/systemd/system`
+2. Run the service
+```
+systemctl start websec_api.service
+```
 
 ## Status and Logs
-
-`systemctl start websec_api.service` \
-`journalctl -u websec_api -f`
+### Check status
+```
+systemctl start websec_api.service
+```
+### Check logs
+```
+journalctl -u websec_api -f
+```
