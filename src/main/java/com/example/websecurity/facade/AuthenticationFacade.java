@@ -16,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +48,7 @@ public class AuthenticationFacade {
                     )
             );
             loginAttemptService.loginSucceeded(request.getEmail());
-        } catch (BadCredentialsException e) {
+        } catch (AuthenticationException  e) {
             loginAttemptService.loginFailed(request.getEmail());
             throw e;
         }

@@ -12,7 +12,7 @@ import lombok.Data;
 public class LoginAttemptService {
 
     @Data
-    public class LoginAttemptData {
+    public static class LoginAttemptData {
         private int attempts = 0;
         private LocalDateTime lockoutUntil;
 
