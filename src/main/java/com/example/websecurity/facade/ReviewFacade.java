@@ -19,8 +19,8 @@ public class ReviewFacade {
 
     private final ReviewService reviewService;
 
-    public ReviewResponse getReviewById(Long id) {
-        Review review = reviewService.getReviewById(id);
+    public ReviewResponse getReviewById(Long userId, long reviewId) {
+        Review review = reviewService.getReviewByIdAndUserId(reviewId, userId); // izmena
         return ReviewResponse.builder()
                 .id(review.getId())
                 .movieTitle(review.getMovieTitle())
@@ -30,11 +30,15 @@ public class ReviewFacade {
                 .build();
     }
 
-    public ReviewResponse updateReview(Long id, UpdateReviewRequest updateReviewRequest) {
-        Review review = reviewService.getReviewById(id);
-        review.setReviewText(updateReviewRequest.getReviewText());
-        review.setRating(updateReviewRequest.getRating());
-        Review updatedReview = reviewService.updateReview(review);
+    public ReviewResponse updateReview(Long userId, Long reviewId, UpdateReviewRequest updateReviewRequest) {
+        Review updatedReview = reviewService.updateReviewForUser(
+            reviewId,
+            userId,
+            Review.builder()
+                .reviewText(updateReviewRequest.getReviewText())
+                .rating(updateReviewRequest.getRating())
+                .build()
+        );
         return ReviewResponse.builder()
                 .id(updatedReview.getId())
                 .movieTitle(updatedReview.getMovieTitle())

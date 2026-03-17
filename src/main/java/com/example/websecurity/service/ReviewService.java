@@ -30,4 +30,18 @@ public class ReviewService {
     public List<Review> getReviewsByUser(Long userId) {
         return reviewRepository.findByUserId(userId);
     }
+
+    public Review getReviewByIdAndUserId(Long reviewId, Long userId) {
+        return reviewRepository.findByIdAndUserId(reviewId, userId)
+            .orElseThrow(() -> new WebSecMissingDataException(
+                "Review with id " + reviewId + " not found for user " + userId
+            ));
+    }
+
+    public Review updateReviewForUser(Long reviewId, Long userId, Review updatedData) {
+        Review review = getReviewByIdAndUserId(reviewId, userId); // već postojeći metod
+        review.setReviewText(updatedData.getReviewText());
+        review.setRating(updatedData.getRating());
+        return reviewRepository.save(review);
+    }
 }
